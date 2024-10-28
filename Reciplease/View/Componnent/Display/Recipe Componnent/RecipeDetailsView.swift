@@ -36,7 +36,7 @@ struct RecipeDetailsView: View {
                         .padding(.horizontal)
                 }
                 .padding(.bottom)
-                IngredientView(ingredients: recipe.ingredientLines)
+//                IngredientView(ingredients: sea)
                 ContinueButtonView(title: "Get direction") {
                     showDirectionView.toggle()
                 }

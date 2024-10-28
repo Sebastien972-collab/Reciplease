@@ -10,7 +10,7 @@ import XCTest
 
 final class SearchTest: XCTestCase {
     
-    var newSearch = Search(service: RecipleaseService(recipeSession: RecipeSessionFake(fakeResponse: Result.success(FakeResponseData.recipeCorrectData) )))
+    var newSearch = SearchManager(service: RecipleaseService(recipeSession: RecipeSessionFake(fakeResponse: Result.success(FakeResponseData.recipeCorrectData) )))
     
     
     
@@ -57,7 +57,7 @@ final class SearchTest: XCTestCase {
     func testGivenAcorrectDataAndCheckRecipeNotEmpty() {
         let recipeSession = RecipeSessionFake(fakeResponse: Result.success(FakeResponseData.recipeCorrectData) )
         let recipeService = RecipleaseService(recipeSession: recipeSession)
-        let search = Search(service: recipeService)
+        let search = SearchManager(service: recipeService)
         
         search.addIngredients("Souppe, Lemon, Apple")
         search.getRecipes()
@@ -67,7 +67,7 @@ final class SearchTest: XCTestCase {
     func testGivenAIncorrectDataAndCheckRecipeEmpty() {
         let recipeSession = RecipeSessionFake(fakeResponse: Result.success(FakeResponseData.incorrectData) )
         let recipeService = RecipleaseService(recipeSession: recipeSession)
-        let search = Search(service: recipeService)
+        let search = SearchManager(service: recipeService)
         
         search.getRecipes()
         print(search.recipes.count)
@@ -78,7 +78,7 @@ final class SearchTest: XCTestCase {
         let recipeSession = RecipeSessionFake(fakeResponse: Result.success(FakeResponseData.recipeCorrectData) )
         let recipeService = RecipleaseService(recipeSession: recipeSession)
         
-        let search = Search(service: recipeService)
+        let search = SearchManager(service: recipeService)
         search.addIngredients("Souppe, Lemon, Apple")
         search.getRecipes()
         print("Nombre de recipe est \(search.recipes.count)")
@@ -90,7 +90,7 @@ final class SearchTest: XCTestCase {
     func testGivenIncorrectDataTestError() {
         let recipeSession = RecipeSessionFake(fakeResponse: Result.failure(FakeResponseData.reponseError) )
         let recipeService = RecipleaseService(recipeSession: recipeSession)
-        let search = Search(service: recipeService)
+        let search = SearchManager(service: recipeService)
         
         search.addIngredients("Souppe, Lemon, Apple")
         search.getRecipes()
@@ -104,7 +104,7 @@ final class SearchTest: XCTestCase {
     func testNextRecipeFunction() {
         let recipeSession = RecipeSessionFake(fakeResponse: Result.success(FakeResponseData.recipeCorrectData) )
         let recipeService = RecipleaseService(recipeSession: recipeSession)
-        let search = Search(service: recipeService)
+        let search = SearchManager(service: recipeService)
         
         search.addIngredients("Souppe, Lemon, Apple")
         search.getRecipes()
@@ -116,7 +116,7 @@ final class SearchTest: XCTestCase {
     func testNextRecipeWithIncorrectData() {
         let recipeSession = RecipeSessionFake(fakeResponse: Result.success(FakeResponseData.incorrectData) )
         let recipeService = RecipleaseService(recipeSession: recipeSession)
-        let search = Search(service: recipeService)
+        let search = SearchManager(service: recipeService)
         
         search.addIngredients("Souppe, Lemon, Apple")
         search.getRecipes()

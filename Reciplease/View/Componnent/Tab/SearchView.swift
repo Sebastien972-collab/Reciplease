@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SearchView: View {
     @FocusState private var fieldIsFocused : Bool
-    @StateObject private var search = Search.shared
+    @StateObject var search = SearchManager.shared
     
     var body: some View {
         NavigationStack{
@@ -21,33 +21,7 @@ struct SearchView: View {
                         SearchRecipeTextFieldView(text: $search.ingredient, action: search.addIngredients)
                         .padding()
                         Divider()
-                    }
-                    
-                    VStack {
-                        HStack() {
-                            Text("Your ingredients : ")
-                                .foregroundColor(.white)
-                            Spacer()
-                            Button {
-                                search.clearIngredients()
-                            } label: {
-                                Text("Clear")
-                                    .foregroundColor(.white)
-                                    .bold()
-                                    .padding()
-                                    .background(Color.gray)
-                                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                                
-                            }
-                            
-                        }
-                        .padding()
-                        ForEach(search.ingredients, id : \.self) { ingredient in
-                            Text("- \(ingredient)")
-                                .font(.title3)
-                                .foregroundColor(.white)
-                                .bold()
-                        }
+                        IngredientView(search: search)
                     }
                     .onTapGesture {
                         fieldIsFocused = false
@@ -91,6 +65,6 @@ struct SearchView: View {
 
 struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
-        SearchView()
+        SearchView(search: .previews)
     }
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RecipesListView: View {
-    @ObservedObject var search: Search
+    @ObservedObject var search: SearchManager
     @State private var scale = 1.0
     var body: some View {
         ZStack {
@@ -45,7 +45,7 @@ struct RecipesListView: View {
 struct RecipesListView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            RecipesListView(search: Search.shared)
+            RecipesListView(search: SearchManager.shared)
         }
     }
 }

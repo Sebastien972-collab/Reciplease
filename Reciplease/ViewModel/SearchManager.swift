@@ -8,8 +8,8 @@
 import Foundation
 import SJDKitToolBox
 
-class Search: ObservableObject {
-    static var shared = Search()
+class SearchManager: ObservableObject {
+    static var shared = SearchManager()
     private init(){}
     @Published var ingredient : String = ""
     @Published var ingredients : [String] = []
@@ -96,5 +96,13 @@ class Search: ObservableObject {
             self.isComplete.toggle()
         }
         self.inProgress.toggle()
+    }
+    
+    static var previews: SearchManager {
+        let manager = SearchManager()
+        manager.ingredient = "Bacon, Eggs, Cheese"
+        manager.addIngredients()
+        manager.recipes = [.preview, .preview, .preview]
+        return manager
     }
 }
