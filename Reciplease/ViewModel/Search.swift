@@ -11,6 +11,7 @@ import SJDKitToolBox
 class Search: ObservableObject {
     static var shared = Search()
     private init(){}
+    @Published var ingredient : String = ""
     @Published var ingredients : [String] = []
     @Published var recipes : [Recipe] = []
     @Published var searchError: Error = SearchError.noNewsFound
@@ -24,19 +25,19 @@ class Search: ObservableObject {
     }
     
     /// Function that allows you to add ingredients
-    func addIngredients(_ ingredients : String)  {
-        guard ingredients.isNotEmpty else {
+    func addIngredients()  {
+        guard ingredient.isNotEmpty else {
             searchError =  SearchError.ingredientFieldEmpty
             showError.toggle()
             return
         }
-        guard !ingredients.containsAnumber else {
+        guard !ingredient.containsAnumber else {
             searchError =  SearchError.invalidCharacter
             showError.toggle()
             return
         }
         
-        let newIngredients = ingredients.splitString(with: ",")
+        let newIngredients = ingredient.splitString(with: ",")
         for newIngredient in newIngredients {
             if !self.ingredients.contains(newIngredient) {
                 

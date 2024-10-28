@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct SearchView: View {
-    @State private var ingredient : String = ""
     @FocusState private var fieldIsFocused : Bool
     @StateObject private var search = Search.shared
     
@@ -19,31 +18,11 @@ struct SearchView: View {
                 VStack {
                     VStack {
                         Text("What's in your fridge ? ")
-                        HStack {
-                            TextField("Lemon, Cheese, Sausages...", text: $ingredient)
-                                .accessibilityLabel(Text("Entrez vos ingredient"))
-                                .focused($fieldIsFocused)
-                            Button {
-                                
-                                search.addIngredients(ingredient)
-                                
-                                ingredient.removeAll()
-                            } label: {
-                                Text("Add")
-                                    .accessibilityLabel(Text("Appuyez pour ajouter un élément"))
-                                    .foregroundColor(.white)
-                                    .bold()
-                                    .padding()
-                                    .background(Color("greenApp"))
-                                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                            }
-                        }
+                        SearchRecipeTextFieldView(text: $search.ingredient, action: search.addIngredients)
                         .padding()
                         Divider()
                     }
-                    .frame(maxWidth : .infinity, maxHeight: 200)
-                    .background(Color.white)
-                    .padding(.top)
+                    
                     VStack {
                         HStack() {
                             Text("Your ingredients : ")
