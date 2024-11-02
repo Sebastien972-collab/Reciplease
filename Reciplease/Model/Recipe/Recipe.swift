@@ -18,7 +18,7 @@ struct Hit : Codable, Hashable {
 }
 
 struct Recipe : Hashable, Codable, Equatable{
-    let label : String
+    var label : String
     let image : String
     let source : String
     let url : String
@@ -26,7 +26,7 @@ struct Recipe : Hashable, Codable, Equatable{
     let totalTime : Int
     func time() -> String {
         if totalTime == 0 {
-            return "Unknow"
+            return "Unknow Time "
         }
         let hours = totalTime / 60
         let minute = totalTime - hours * 60

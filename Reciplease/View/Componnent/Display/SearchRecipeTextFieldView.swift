@@ -10,16 +10,18 @@ import SwiftUI
 struct SearchRecipeTextFieldView: View {
     @FocusState var isFocused: Bool
     @Binding var text: String
+    @Environment(\.colorScheme) private var colorScheme
     var action: () -> Void
     
     var body: some View {
         ZStack {
             Rectangle()
-                .fill(Color.white)
+                .fill(colorScheme == .dark ? .black : .white)
             HStack {
                 Image(systemName: "magnifyingglass")
                     .foregroundStyle(.gray)
                 TextField("Entrez vos ingredients !", text: $text)
+                    .foregroundStyle(colorScheme == .dark ? .white : .black)
                     .focused($isFocused)
                     .padding()
                 Button {

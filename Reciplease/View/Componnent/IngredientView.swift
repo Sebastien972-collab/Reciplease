@@ -9,7 +9,8 @@ import SwiftUI
 
 struct IngredientView: View {
     @ObservedObject var search: SearchManager
-    
+    @Environment(\.colorScheme) var colorScheme
+
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
@@ -24,7 +25,7 @@ struct IngredientView: View {
             }
             ZStack {
                 Rectangle()
-                    .fill(Color.white)
+                    .fill(colorScheme == .dark ? .black : .white)
                 VStack(alignment: .leading) {
                     List(search.ingredients, id: \.self) { elem in
                         HStack {

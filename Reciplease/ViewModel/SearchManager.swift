@@ -91,8 +91,12 @@ class SearchManager: ObservableObject {
             return
         }
         let newRecipes = self.hitsToRecipe(hits)
-        for newRecipe in newRecipes {
-            self.recipes.append(newRecipe)
+        if nextRecipe {
+            for newRecipe in newRecipes {
+                self.recipes.append(newRecipe)
+            }
+        } else {
+            self.recipes = newRecipes
         }
         guard self.recipes.isNotEmpty else {
             self.searchError = SearchError.noNewsFound

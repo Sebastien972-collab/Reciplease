@@ -7,49 +7,82 @@
 
 import SwiftUI
 import CoreData
+import Translation
 struct RecipeDetailsView: View {
     @State var recipe : Recipe
+    @State private var translation: String = ""
+    @State private var configuration: TranslationSession.Configuration?
+    @State private var selectedTranslation: [String] = []
     let favoriteRecipe = FavoriteRecipe.shared
     @State private var showDirectionView = false
     @State private var error : Error?
     @State private var alertIsPresented = false
     @State private var isFavorite = false
-    
+    @State private var showTranslation = false
     var body: some View {
         ZStack {
             Color.backgroundApp.edgesIgnoringSafeArea(.top)
-            VStack(content: {
-                VStack(alignment: .leading, spacing : 10) {
-                    AsyncImage(url: URL(string: recipe.image)) { image in
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(maxWidth: .infinity, maxHeight: 300)
-                            .accessibilityHidden(true)
-                    } placeholder: {
-                        ProgressView()
-                    }
+            VStack(alignment: .center, content: {
+                RoundedRectangleImageView(url: recipe.image)
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("DESCRIPTION DE LA RECETTE")
+                        .font(.headline)
+                        .foregroundStyle(.greenApp)
                     Text(recipe.label)
-                        .accessibilityLabel(Text("Nom de la recette : \(recipe.label)"))
-                        .foregroundColor(.white)
-                        .font(.title)
-                        .padding(.horizontal)
+                        .font(.title2)
+                        .bold()
+                    HStack {
+                        Text("Ingredients: ")
+                        Spacer()
+                        Button {
+                            selectedTranslation = recipe.ingredientLines
+                            showTranslation.toggle()
+                        } label: {
+                            HStack {
+                                Text("Traduire")
+                                Text("(Bêta)")
+                                    .foregroundStyle(.gray)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                    }
+                    List(recipe.ingredientLines, id: \.self){ ingredient in
+                        HStack {
+                            Text(ingredient)
+                            Spacer()
+                            Button {
+                                translation = ingredient
+                                showTranslation.toggle()
+                            } label: {
+                                Text("Traduire")
+                            }
+                        }
+                    }
+                    .listStyle(.plain)
                 }
-                .padding(.bottom)
-//                IngredientView(ingredients: sea)
-                ContinueButtonView(title: "Get direction") {
+                Spacer()
+                ContinueButtonView(title: "Voir les instructions") {
                     showDirectionView.toggle()
                 }
-                .padding()
-                .fullScreenCover(isPresented: $showDirectionView) {
+                .navigationDestination(isPresented: $showDirectionView) {
                     SafariView(url: recipe.url)
+                }
+            })
+            .translationPresentation(isPresented: $showTranslation, text: translation)
+            .translationTask(configuration, action: { session in
+                do {
+                    let response = try await session.translate(recipe.label)
+                    recipe.label = response.targetText
+                } catch  {
+                    self.error = error
+                    alertIsPresented.toggle()
                 }
             })
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    RecipleaseTitle()
+                    Text("Détails de la recette")
                 }
-                ToolbarItem(placement : .navigationBarTrailing) {
+                ToolbarItem(placement : .topBarTrailing) {
                     Button {
                         do {
                             try favoriteRecipe.saveRecipe(recipe: recipe)
@@ -58,10 +91,10 @@ struct RecipeDetailsView: View {
                             self.error = error
                             alertIsPresented.toggle()
                         }
-                       
+                        
                     } label: {
                         Image(systemName: "star.fill")
-                            .foregroundColor(isFavorite ? .yellow : .white)
+                            .foregroundColor(isFavorite ? .yellow : .gray)
                     }
                     
                 }
@@ -70,6 +103,7 @@ struct RecipeDetailsView: View {
                 isFavorite = favoriteRecipe.checkElementIsFavorite(recipe: recipe)
             }
         }
+        .padding()
         .alert(isPresented: $alertIsPresented) {
             Alert(title: Text("Erreur"), message: Text(error?.localizedDescription ?? "Unknow error"), dismissButton: .default(Text("Ok")))
         }
@@ -79,7 +113,7 @@ struct RecipeDetailsView: View {
 
 struct RecipeDetailsView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
+        NavigationStack {
             RecipeDetailsView(recipe: Hit.defaultHits.recipe)
         }
     }

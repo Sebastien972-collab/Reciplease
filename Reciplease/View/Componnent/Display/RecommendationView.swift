@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RecommendationView: View {
-    let recipes: [Recipe]
+    var recipes: [Recipe]
     var body: some View {
         VStack(alignment: .leading) {
             Text("Recommenations: ")

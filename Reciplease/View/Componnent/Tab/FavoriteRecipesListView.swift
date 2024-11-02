@@ -27,24 +27,12 @@ struct FavoriteRecipesListView: View {
                                 }
                                 
                             }
-
+                            
                         }
                     }
                     
-                    .toolbar {
-                        ToolbarItem(placement : .principal) {
-                            RecipleaseTitle()
-                        }
-                        
-                    }
                 }
-                    .toolbar {
-                        ToolbarItem(placement: .principal) {
-                            Text("Reciplease")
-                                .font(.title)
-                                .foregroundColor(.white)
-                        }
-                    }
+                .navigationTitle(Text("Recettes préférées"))
             }
             .onAppear() {
                 favoriteRecipes = FavoriteRecipe.shared.all

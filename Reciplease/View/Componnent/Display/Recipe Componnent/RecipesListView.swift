@@ -14,18 +14,24 @@ struct RecipesListView: View {
         ZStack {
             Color.backgroundApp.edgesIgnoringSafeArea(.top)
             VStack {
-                List(search.recipes, id: \.self) { recipe in
-                    NavigationLink {
-                        RecipeDetailsView(recipe: recipe)
-                    } label: {
-                        RecipeRow(recipe: recipe)
+                List{
+                    ForEach(search.recipes, id: \.self) { recipe in
+                        NavigationLink {
+                            RecipeDetailsView(recipe: recipe)
+                        } label: {
+                            RecipeRow(recipe: recipe)
+                        }
                     }
+                    HStack {
+                        Spacer()
+                        ContinueButtonView(title: "Rectettes suivantes", action: search.getNextPage)
+                            .navigationTitle("Rectettes trouvées")
+                        Spacer()
+                    }
+                        
                 }
                 .listRowSeparator(.hidden)
                 .listStyle(.plain)
-                
-                ContinueButtonView(title: "Rectettes suivantes", action: search.getNextPage)
-                    .navigationTitle("Rectettes trouvées")
                 
             }
         }
