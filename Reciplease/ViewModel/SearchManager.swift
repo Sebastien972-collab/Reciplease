@@ -44,6 +44,7 @@ class SearchManager: ObservableObject {
                 self.ingredients.append(newIngredient)
             }
         }
+        ingredient.removeAll()
     }
     /// Function that allows you to erase existing ingredients
     func clearIngredients() {
@@ -74,6 +75,13 @@ class SearchManager: ObservableObject {
         inProgress.toggle()
         nextRecipe = true
         service.getNextReciplease(callback: handle)
+    }
+    func removeIngredient(ingredient: String)  {
+        for (index, ingredient) in ingredients.enumerated() {
+            if ingredient == ingredient {
+                ingredients.remove(at: index)
+            }
+        }
     }
     
     private func handle(success: Bool, hits: [Hit]?, error: Error?) {

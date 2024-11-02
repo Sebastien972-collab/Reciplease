@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SearchRecipeTextFieldView: View {
+    @FocusState var isFocused: Bool
     @Binding var text: String
     var action: () -> Void
     
@@ -19,6 +20,7 @@ struct SearchRecipeTextFieldView: View {
                 Image(systemName: "magnifyingglass")
                     .foregroundStyle(.gray)
                 TextField("Entrez vos ingredients !", text: $text)
+                    .focused($isFocused)
                     .padding()
                 Button {
                     action()

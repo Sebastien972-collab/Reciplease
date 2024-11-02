@@ -11,38 +11,24 @@ struct RecipeRow: View {
     
     var body: some View {
         ZStack {
-            AsyncImage(url: URL(string: recipe.image)) { image in
-                image.resizable()
-            } placeholder: {
-                ProgressView()
-            }
-            .accessibilityHidden(true)
-            
-            VStack {
-                HStack {
-                    Spacer()
-                    RecipeIndicationsLabeView(time: "\(recipe.time())")
-                        .padding()
+            RoundedRectangle(cornerRadius: 12.5)
+                .fill(.bacgroundApp)
+                .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 5)
+            HStack {
+                VStack(alignment: .leading) {
+                    Text(recipe.label)
+                        .font(.title)
+                        .lineLimit(1)
+                    Text("\(recipe.ingredientLines.count) ingredients")
+                        .font(.subheadline)
                 }
-                Spacer()
-                Text(recipe.label)
-                    .accessibilityLabel(Text("Nom de recette \(recipe.label)"))
-                    .foregroundColor(.white)
-                    .font(.title)
-                    .bold()
-                
+                RoundedRectangleImageView(url: recipe.image)
+                    .clipShape(Circle())
+                    .frame(width: 150, height: 150)
             }
-            
-            
-
+            .padding()
         }
-        .frame(maxWidth: .infinity, maxHeight: 300)
-        .clipShape(RoundedRectangle(cornerRadius: 25))
-        .overlay(RoundedRectangle(cornerRadius: 25)
-            .stroke(Color.white, lineWidth: 2)
-        )
-        .padding(.horizontal)
-        
+        .padding()
         
     }
     
@@ -61,6 +47,9 @@ struct RecipeRow: View {
 
 struct RecipeRow_Previews: PreviewProvider {
     static var previews: some View {
-        RecipeRow(recipe: Hit.defaultHits.recipe)
+        ZStack {
+            Color.bacgroundApp.edgesIgnoringSafeArea(.all)
+            RecipeRow(recipe: Hit.defaultHits.recipe)
+        }
     }
 }

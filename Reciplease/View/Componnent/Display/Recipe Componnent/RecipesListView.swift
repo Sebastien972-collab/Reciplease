@@ -23,20 +23,10 @@ struct RecipesListView: View {
                         }
                         
                     }
-                    Button(action: {
-                        search.getNextPage()
-                    }, label: {
-                        Text("Next recipe")
-                    })
+                    ContinueButtonView(title: "Rectettes suivantes", action: search.getNextPage)
+                    
                     .padding()
                 }
-            }
-            
-            .toolbar {
-                ToolbarItem(placement : .principal) {
-                    RecipleaseTitle()
-                }
-                
             }
         }
     }
@@ -45,7 +35,7 @@ struct RecipesListView: View {
 struct RecipesListView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            RecipesListView(search: SearchManager.shared)
+            RecipesListView(search: SearchManager.previews)
         }
     }
 }

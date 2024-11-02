@@ -16,7 +16,7 @@ struct ContinueButtonView: View {
             Text(title)
                 .accessibilityLabel("Appuyer pour continuer")
                 .foregroundColor(.white)
-                .frame(maxWidth: 300, maxHeight: 60)
+                .frame(width: 300, height: 60)
                 .background(Color("greenApp"))
                 .clipShape(RoundedRectangle(cornerRadius: 10))
         }

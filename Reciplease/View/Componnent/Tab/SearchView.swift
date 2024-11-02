@@ -12,19 +12,23 @@ struct SearchView: View {
     @StateObject var search = SearchManager.shared
     
     var body: some View {
-        NavigationStack{
+        NavigationStack {
             ZStack {
                 Color.backgroundApp.edgesIgnoringSafeArea(.top)
                 VStack {
                     VStack {
-                        Text("What's in your fridge ? ")
-                        SearchRecipeTextFieldView(text: $search.ingredient, action: search.addIngredients)
+                        SearchRecipeTextFieldView(isFocused: _fieldIsFocused, text: $search.ingredient, action: search.addIngredients)
                         .padding()
-                        Divider()
                         IngredientView(search: search)
-                    }
-                    .onTapGesture {
-                        fieldIsFocused = false
+                            .frame(maxHeight: 400)
+                        if !fieldIsFocused && search.recipes.isNotEmpty {
+                            withAnimation(.easeInOut(duration: 0.5)) {
+                                RecommendationView(recipes: search.recipes)
+                                    .frame(height: 250)
+                            }
+                                
+                        }
+                            
                     }
                     Spacer()
                     ZStack {
@@ -41,14 +45,19 @@ struct SearchView: View {
                     })
                     
                 }
-                .onTapGesture {
-                    fieldIsFocused = false
-                }
-                .toolbar(content: {
-                    ToolbarItem(placement: .principal) {
-                        RecipleaseTitle()
+                .toolbar {
+                    if fieldIsFocused {
+                        ToolbarItem(placement: .topBarLeading) {
+                            Button("OK") {
+                                fieldIsFocused = false
+                            }
+                        }
                     }
-                })
+                    ToolbarItem(placement: .principal) {
+                        Text("What's in your fridge ? ")
+                    }
+                }
+                
             }
             .alert(isPresented: $search.showError) {
                 Alert(

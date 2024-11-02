@@ -26,13 +26,22 @@ struct IngredientView: View {
                 Rectangle()
                     .fill(Color.white)
                 VStack(alignment: .leading) {
-                    ForEach(search.ingredients,id: \.self) { ingredient in
+                    List(search.ingredients, id: \.self) { elem in
                         HStack {
-                            Text("- \(ingredient)")
+                            Text(elem.description)
                             Spacer()
+                            Button {
+                                withAnimation(.easeInOut(duration: 1)) {
+                                    search.removeIngredient(ingredient: elem)
+                                }
+                            } label: {
+                                Image(systemName: "xmark.circle")
+                                    .foregroundStyle(.red)
+                            }
+
                         }
                     }
-                    Spacer()
+                    .listStyle(.plain)
                 }
                 .multilineTextAlignment(.leading)
                 .padding()
