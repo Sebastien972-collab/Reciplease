@@ -15,12 +15,17 @@ struct RecipeRow: View {
                 .fill(.bacgroundApp)
                 .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 5)
             HStack {
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 10) {
                     Text(recipe.label)
-                        .font(.title)
+                        .bold()
                         .lineLimit(1)
                     Text("\(recipe.ingredientLines.count) ingredients")
                         .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                    Text(recipe.time())
+                        .font(.subheadline)
+                        .lineLimit(1)
                 }
                 RoundedRectangleImageView(url: recipe.image)
                     .clipShape(Circle())

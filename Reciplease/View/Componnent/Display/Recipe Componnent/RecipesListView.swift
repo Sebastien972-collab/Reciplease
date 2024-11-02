@@ -13,20 +13,20 @@ struct RecipesListView: View {
     var body: some View {
         ZStack {
             Color.backgroundApp.edgesIgnoringSafeArea(.top)
-            ScrollView {
-                VStack {
-                    ForEach(search.recipes, id: \.self) { recipe in
-                        NavigationLink {
-                            RecipeDetailsView(recipe: recipe)
-                        } label: {
-                            RecipeRow(recipe: recipe)
-                        }
-                        
+            VStack {
+                List(search.recipes, id: \.self) { recipe in
+                    NavigationLink {
+                        RecipeDetailsView(recipe: recipe)
+                    } label: {
+                        RecipeRow(recipe: recipe)
                     }
-                    ContinueButtonView(title: "Rectettes suivantes", action: search.getNextPage)
-                    
-                    .padding()
                 }
+                .listRowSeparator(.hidden)
+                .listStyle(.plain)
+                
+                ContinueButtonView(title: "Rectettes suivantes", action: search.getNextPage)
+                    .navigationTitle("Rectettes trouvées")
+                
             }
         }
     }
@@ -39,3 +39,19 @@ struct RecipesListView_Previews: PreviewProvider {
         }
     }
 }
+
+//ScrollView {
+//    VStack {
+//        ForEach(search.recipes, id: \.self) { recipe in
+//            NavigationLink {
+//                RecipeDetailsView(recipe: recipe)
+//            } label: {
+//                RecipeRow(recipe: recipe)
+//            }
+//
+//        }
+//        ContinueButtonView(title: "Rectettes suivantes", action: search.getNextPage)
+//
+//        .padding()
+//    }
+//}

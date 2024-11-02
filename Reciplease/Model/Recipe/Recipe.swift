@@ -30,7 +30,7 @@ struct Recipe : Hashable, Codable, Equatable{
         }
         let hours = totalTime / 60
         let minute = totalTime - hours * 60
-        return "\(hours)h\(minute) "
+        return "\(hours) heure\(hours > 1 ? "s" : "") \(minute) minutes"
     }
     static func == (lhs: Recipe, rhs: Recipe) -> Bool {
             return
